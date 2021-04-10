@@ -15,14 +15,15 @@ void main() {
   RemoteAuthentication sut;
   HttpClientSpy httpClient;
   String url;
+  AuthenticationParams params;
 
   setUp(() {
     httpClient = HttpClientSpy();
     url = faker.internet.httpUrl();
     sut = RemoteAuthentication(httpClient: httpClient, url: url);
+    params = AuthenticationParams(id: faker.internet.toString());
   });
   test('Deve chamar HttpClient com valores corretos', () async {
-    final params = AuthenticationParams(id: faker.internet.toString());
     await sut.auth(params);
 
     verify(httpClient.request(
@@ -39,7 +40,6 @@ void main() {
       body: anyNamed('body'),
     )).thenThrow(HttpError.badRequest);
 
-    final params = AuthenticationParams(id: faker.internet.toString());
     final future = sut.auth(params);
 
     expect(future, throwsA(DomainError.unexpected));
