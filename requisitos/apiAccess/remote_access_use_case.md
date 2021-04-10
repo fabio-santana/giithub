@@ -9,7 +9,7 @@
 
 > ## Exceção - URL inválida
 
-1. Sistema retorna uma mensagem de erro inesperado
+1. Sistema retorna uma mensagem de erro inesperado - OK
 
 > ## Exceção - Dados inválidos
 
@@ -21,4 +21,8 @@
 
 > ## Exceção - Falha no servidor
 
-1. Sistema retorna uma mensagem de erro inesperado
+1. Sistema retorna uma mensagem de erro inesperado - OK
+
+> ## Exceção - Credenciais inválidas
+
+1. Sistema retorna uma mensagem de erro informando que as credenciais estão erradas - OK
