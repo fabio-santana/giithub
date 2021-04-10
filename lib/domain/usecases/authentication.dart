@@ -10,6 +10,4 @@ class AuthenticationParams {
   AuthenticationParams({
     this.id,
   });
-
-  Map toJson() => {'id': id};
 }
