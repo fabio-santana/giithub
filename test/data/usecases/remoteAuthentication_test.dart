@@ -27,12 +27,17 @@ abstract class HttpClient {
 class HttpClientSpy extends Mock implements HttpClient {}
 
 void main() {
-  test('Deve chamar HttpClient com valores corretos', () async {
-    //sut = system under test
-    final httpClient = HttpClientSpy();
-    final url = faker.internet.httpUrl();
-    final sut = RemoteAuthentication(httpClient: httpClient, url: url);
+  //sut = system under test
+  RemoteAuthentication sut;
+  HttpClientSpy httpClient;
+  String url;
 
+  setUp(() {
+    httpClient = HttpClientSpy();
+    url = faker.internet.httpUrl();
+    sut = RemoteAuthentication(httpClient: httpClient, url: url);
+  });
+  test('Deve chamar HttpClient com valores corretos', () async {
     await sut.auth();
 
     verify(httpClient.request(
