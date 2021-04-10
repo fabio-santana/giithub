@@ -1,7 +1,9 @@
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
 import 'package:meta/meta.dart';
+import 'package:mockito/mockito.dart';
+
+import '../../../lib/domain/usecases/usecases.dart';
 
 class RemoteAuthentication {
   final HttpClient httpClient;
@@ -12,8 +14,13 @@ class RemoteAuthentication {
     this.url,
   });
 
-  Future<void> auth() async {
-    await httpClient.request(url: url, method: 'post');
+  Future<void> auth(AuthenticationParams params) async {
+    final body = {'id': params.id};
+    await httpClient.request(
+      url: url,
+      method: 'post',
+      body: body,
+    );
   }
 }
 
@@ -21,6 +28,7 @@ abstract class HttpClient {
   Future<void> request({
     @required String url,
     @required String method,
+    Map body,
   });
 }
 
@@ -38,11 +46,13 @@ void main() {
     sut = RemoteAuthentication(httpClient: httpClient, url: url);
   });
   test('Deve chamar HttpClient com valores corretos', () async {
-    await sut.auth();
+    final params = AuthenticationParams(id: faker.internet.toString());
+    await sut.auth(params);
 
     verify(httpClient.request(
       url: url,
       method: 'post',
+      body: {'id': params.id},
     ));
   });
 }
