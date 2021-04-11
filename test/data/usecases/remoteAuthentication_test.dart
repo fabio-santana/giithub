@@ -24,6 +24,26 @@ void main() {
     params = AuthenticationParams(id: faker.internet.toString());
   });
   test('Deve chamar HttpClient com valores corretos', () async {
+    final login = faker.internet.userName();
+    final avatar = faker.image.image();
+    final location = faker.internet.toString();
+    final bio = faker.internet.toString();
+    final name = faker.person.name();
+    final email = faker.internet.email();
+
+    when(httpClient.request(
+      url: anyNamed('url'),
+      method: anyNamed('method'),
+      body: anyNamed('body'),
+    )).thenAnswer((_) async => {
+          'login': login,
+          'avatar': avatar,
+          'location': location,
+          'bio': bio,
+          'name': name,
+          'email': email,
+        });
+
     await sut.auth(params);
 
     verify(httpClient.request(
@@ -79,5 +99,52 @@ void main() {
     final future = sut.auth(params);
 
     expect(future, throwsA(DomainError.invalidCredentials));
+  });
+
+  test('Deve retornar o Account se o HttpClient retornar 200', () async {
+    final login = faker.internet.userName();
+    final avatar = faker.image.image();
+    final location = faker.internet.toString();
+    final bio = faker.internet.toString();
+    final name = faker.person.name();
+    final email = faker.internet.email();
+
+    when(httpClient.request(
+      url: anyNamed('url'),
+      method: anyNamed('method'),
+      body: anyNamed('body'),
+    )).thenAnswer((_) async => {
+          'login': login,
+          'avatar': avatar,
+          'location': location,
+          'bio': bio,
+          'name': name,
+          'email': email,
+        });
+
+    final account = await sut.auth(params);
+
+    expect(account.login, login);
+    expect(account.avatar, avatar);
+    expect(account.location, location);
+    expect(account.bio, bio);
+    expect(account.name, name);
+    expect(account.email, email);
+
+    // expect([
+    //   account.login,
+    //   account.avatar,
+    //   account.location,
+    //   account.bio,
+    //   account.name,
+    //   account.email,
+    // ], [
+    //   login,
+    //   avatar,
+    //   location,
+    //   bio,
+    //   name,
+    //   email,
+    // ]);
   });
 }
