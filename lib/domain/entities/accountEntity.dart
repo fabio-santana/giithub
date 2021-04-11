@@ -14,15 +14,4 @@ class AccountEntity {
     this.name,
     this.email,
   );
-
-  factory AccountEntity.fromJson(Map json) {
-    return AccountEntity(
-      json['login'],
-      json['avatar'],
-      json['location'],
-      json['bio'],
-      json['name'],
-      json['email'],
-    );
-  }
 }
