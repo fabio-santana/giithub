@@ -1,3 +1,5 @@
+import '../../data/http/http.dart';
+
 import '../../domain/entities/entities.dart';
 
 class RemoteAccountModel {
@@ -17,15 +19,19 @@ class RemoteAccountModel {
     this.email,
   );
 
-  factory RemoteAccountModel.fromJson(Map json) => RemoteAccountModel(
-        json['login'],
-        json['avatar'],
-        json['location'],
-        json['bio'],
-        json['name'],
-        json['email'],
-      );
-
+  factory RemoteAccountModel.fromJson(Map json) {
+    if (!json.containsKey('login')) {
+      throw HttpError.invalidData;
+    }
+    return RemoteAccountModel(
+      json['login'],
+      json['avatar'],
+      json['location'],
+      json['bio'],
+      json['name'],
+      json['email'],
+    );
+  }
   AccountEntity toEntity() => AccountEntity(
         login,
         avatar,

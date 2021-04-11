@@ -130,21 +130,19 @@ void main() {
     expect(account.bio, bio);
     expect(account.name, name);
     expect(account.email, email);
+  });
 
-    // expect([
-    //   account.login,
-    //   account.avatar,
-    //   account.location,
-    //   account.bio,
-    //   account.name,
-    //   account.email,
-    // ], [
-    //   login,
-    //   avatar,
-    //   location,
-    //   bio,
-    //   name,
-    //   email,
-    // ]);
+  test('Deve retornar UnexpectedError o HttpClient retornar 200 com dado inválido', () async {
+    when(httpClient.request(
+      url: anyNamed('url'),
+      method: anyNamed('method'),
+      body: anyNamed('body'),
+    )).thenAnswer((_) async => {
+          'invalid_key': 'invalid_value',
+        });
+
+    final future = sut.auth(params);
+
+    expect(future, throwsA(DomainError.unexpected));
   });
 }
