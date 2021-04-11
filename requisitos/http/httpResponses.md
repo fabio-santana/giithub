@@ -6,7 +6,7 @@
 2. Passar nos headers o content type JSON - OK
 3. Chamar request com o body correto - OK
 4. OK - 200 e resposta com dados - OK
-5. No content - 204 e resposta sem dados
+5. No content - 204 e resposta sem dados - OK
 
 > ## Erros
 
