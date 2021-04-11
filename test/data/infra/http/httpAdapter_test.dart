@@ -14,14 +14,17 @@ class HttpAdapter {
     @required String method,
     // Map body,
   }) async {
-    await client.post(Uri.http('', url));
+    final headers = {
+      'content-type': 'application/json',
+    };
+    await client.post(Uri.http('', url), headers: headers);
   }
 }
 
 class ClientSpy extends Mock implements Client {}
 
 void main() {
-  group('POST=>', () {
+  group('POST', () {
     test('Deve chamar POST com valores corretos', () async {
       final client = ClientSpy();
       final sut = HttpAdapter(client);
@@ -29,7 +32,12 @@ void main() {
 
       await sut.request(url: url, method: 'post');
 
-      verify(client.post(Uri.http('', url)));
+      verify(client.post(
+        Uri.http('', url),
+        headers: {
+          'content-type': 'application/json',
+        },
+      ));
     });
   });
 }
