@@ -19,6 +19,14 @@ void main() {
     sut = HttpAdapter(client);
     url = faker.internet.httpUrl();
   });
+
+  group('shared', () {
+    test('Deve chamar ServerError se um verbo inválido for utilizado', () async {
+      final future = sut.request(url: url, method: 'invalid_verb', body: {'any_key': 'any_value'});
+
+      expect(future, throwsA(HttpError.serverError));
+    });
+  });
   group('POST', () {
     PostExpectation mockRequest() => when(client.post(any, headers: anyNamed('headers'), body: anyNamed('body')));
     void mockResponse(int statusCode, {String body = '{"any_key":"any_value"}'}) {
