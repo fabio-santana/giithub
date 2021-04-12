@@ -15,11 +15,11 @@
 3. Forbidden - 403
 4. Not Found - 404
 5. Not MOdified - 304
-6. Internal Server Error - 500
+6. Internal Server Error - 500 - OK
 
 > ## Exceção - Status code diferente dos citados acima
 
-1. Internal Server Error - 500
+1. Internal Server Error - 500 - OK
 
 > ## Exceção - Http request deu alguma exceção
 
