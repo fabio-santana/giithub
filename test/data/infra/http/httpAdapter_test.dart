@@ -29,9 +29,12 @@ void main() {
   });
   group('POST', () {
     PostExpectation mockRequest() => when(client.post(any, headers: anyNamed('headers'), body: anyNamed('body')));
+
     void mockResponse(int statusCode, {String body = '{"any_key":"any_value"}'}) {
       mockRequest().thenAnswer((_) async => Response(body, statusCode));
     }
+
+    void mockError() => mockRequest().thenThrow(Exception());
 
     setUp(() {
       mockResponse(200);
@@ -124,6 +127,13 @@ void main() {
 
     test('Deve retornar ServerError se o POST retornar 500', () async {
       mockResponse(500);
+      final future = sut.request(url: url, method: 'post');
+
+      expect(future, throwsA(HttpError.serverError));
+    });
+
+    test('Deve retornar ServerError se o POST tiver uma exceção', () async {
+      mockError();
       final future = sut.request(url: url, method: 'post');
 
       expect(future, throwsA(HttpError.serverError));
