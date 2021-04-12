@@ -92,6 +92,28 @@ void main() {
 
       expect(future, throwsA(HttpError.badRequest));
     });
+
+    test('Deve retornar UnauthorizedError se o POST retornar 401', () async {
+      mockResponse(401);
+      final future = sut.request(url: url, method: 'post');
+
+      expect(future, throwsA(HttpError.unauthorized));
+    });
+
+    test('Deve retornar ForbiddenError se o POST retornar 403', () async {
+      mockResponse(403);
+      final future = sut.request(url: url, method: 'post');
+
+      expect(future, throwsA(HttpError.forbidden));
+    });
+
+    test('Deve retornar NotFoundError se o POST retornar 404', () async {
+      mockResponse(404);
+      final future = sut.request(url: url, method: 'post');
+
+      expect(future, throwsA(HttpError.notFound));
+    });
+
     test('Deve retornar ServerError se o POST retornar 500', () async {
       mockResponse(500);
       final future = sut.request(url: url, method: 'post');

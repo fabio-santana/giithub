@@ -11,11 +11,10 @@
 > ## Erros
 
 1. Bad Request - 400 - OK
-2. Unauthorized - 401
-3. Forbidden - 403
-4. Not Found - 404
-5. Not MOdified - 304
-6. Internal Server Error - 500 - OK
+2. Unauthorized - 401 - OK
+3. Forbidden - 403 - OK
+4. Not Found - 404 - OK
+5. Internal Server Error - 500 - OK
 
 > ## Exceção - Status code diferente dos citados acima
 
