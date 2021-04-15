@@ -3,13 +3,19 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import '../search/search.dart';
+import '../widgets/widgets.dart';
+import '../user/user.dart';
 
 class SearchView extends GetView<SearchController> {
   // final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+    GlobalKey _formKey = GlobalKey<FormState>();
     List user = [];
+    RxBool favorite = false.obs;
+
+    UserController userController = Get.put(UserController());
     // SearchDados cliente;
     // var cpfcnpj = GetStorage().read('cpfcnpj');
 
@@ -30,6 +36,8 @@ class SearchView extends GetView<SearchController> {
                 children: [
                   Container(
                     child: Obx(() {
+                      user = controller.listaUsers.toList();
+
                       return Column(
                         children: <Widget>[
                           Column(
@@ -51,7 +59,23 @@ class SearchView extends GetView<SearchController> {
                               ),
                               ElevatedButton.icon(
                                 onPressed: () async {
-                                  user = await controller.getUsers(controller.userLov.value.text);
+                                  if (controller.userLov.value.text == null || controller.userLov.value.text == '') {
+                                    Get.snackbar(
+                                      'Atenção',
+                                      'Não existe valor informado para pesquisa. Verifique.',
+                                      icon: Icon(Icons.report_problem),
+                                      shouldIconPulse: true,
+                                      barBlur: 50,
+                                      isDismissible: false,
+                                      margin: EdgeInsets.all(8),
+                                      backgroundColor: Colors.blue, // redAccent,
+                                      colorText: Colors.white,
+                                      duration: Duration(seconds: 5),
+                                      snackPosition: SnackPosition.BOTTOM,
+                                    );
+                                  } else {
+                                    user = await controller.getUsers(controller.userLov.value.text);
+                                  }
                                   // user = controller.listaAtualizada(x);
                                 },
                                 icon: Icon(Icons.search),
@@ -69,31 +93,121 @@ class SearchView extends GetView<SearchController> {
                                             shrinkWrap: true,
                                             itemCount: user.length,
                                             itemBuilder: (context, i) {
-                                              print('REGISTROS: ' + user.length.toString());
                                               return Padding(
                                                 padding: const EdgeInsets.fromLTRB(5.0, 2.0, 5.0, 0),
                                                 child: Card(
                                                   child: ListTile(
-                                                    onTap: () {
-                                                      // if (_formKey.currentState.validate()) {
-                                                      //   cliente = user[i];
+                                                    onTap: () async {
+                                                      var detail = await userController.getUser(user[i].url);
 
-                                                      //   // Get.toNamed(Routes.PRODUTOS, arguments: [cpfcnpj, cliente]);
-                                                      // } else {
-                                                      //   Get.snackbar(
-                                                      //     'Atenção',
-                                                      //     'CPF/CNPJ informado é inválido. Verifique!',
-                                                      //     icon: Icon(Icons.report),
-                                                      //     shouldIconPulse: true,
-                                                      //     barBlur: 50,
-                                                      //     isDismissible: false,
-                                                      //     margin: EdgeInsets.all(8),
-                                                      //     backgroundColor: Colors.red[300],
-                                                      //     colorText: Colors.white,
-                                                      //     duration: Duration(seconds: 2),
-                                                      //     snackPosition: SnackPosition.BOTTOM,
-                                                      //   );
-                                                      // }
+                                                      print('URL DO USUÁRIO: ' + user[i].url);
+                                                      Get.defaultDialog(
+                                                          radius: 6.0,
+                                                          title: 'Dados adicionais',
+                                                          actions: [
+                                                            Form(
+                                                              key: _formKey,
+                                                              child: DryIntrinsicHeight(
+                                                                child: Container(
+                                                                  child: Column(
+                                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                                    children: [
+                                                                      CircleAvatar(
+                                                                        backgroundImage: NetworkImage(user[i].avatarUrl),
+                                                                      ),
+                                                                      Row(
+                                                                        children: [
+                                                                          Text(
+                                                                            'Localização: ',
+                                                                            style: TextStyle(
+                                                                              fontWeight: FontWeight.bold,
+                                                                            ),
+                                                                          ),
+                                                                          Text(
+                                                                            detail.location ?? '',
+                                                                            style: TextStyle(fontSize: 15.0),
+                                                                            // overflow: TextOverflow.ellipsis,
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                      Row(
+                                                                        mainAxisAlignment: MainAxisAlignment.start,
+                                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                                        children: [
+                                                                          Text(
+                                                                            'Bio: ',
+                                                                            style: TextStyle(
+                                                                              fontWeight: FontWeight.bold,
+                                                                            ),
+                                                                          ),
+                                                                          Flexible(
+                                                                            child: Text(
+                                                                              detail.bio ?? '',
+                                                                              style: TextStyle(fontSize: 15.0),
+                                                                              maxLines: 5,
+
+                                                                              // overflow: TextOverflow.ellipsis,
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                      Row(
+                                                                        children: [
+                                                                          Text(
+                                                                            'Nome: ',
+                                                                            style: TextStyle(
+                                                                              fontWeight: FontWeight.bold,
+                                                                            ),
+                                                                          ),
+                                                                          Text(
+                                                                            detail.name ?? '',
+                                                                            style: TextStyle(fontSize: 15.0),
+                                                                            // overflow: TextOverflow.ellipsis,
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                      Row(
+                                                                        children: [
+                                                                          Text(
+                                                                            'E-mail: ',
+                                                                            style: TextStyle(
+                                                                              fontWeight: FontWeight.bold,
+                                                                            ),
+                                                                          ),
+                                                                          Text(
+                                                                            detail.email ?? '',
+                                                                            style: TextStyle(fontSize: 15.0),
+                                                                            // overflow: TextOverflow.ellipsis,
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                          cancel: ElevatedButton(
+                                                            style: ElevatedButton.styleFrom(
+                                                              shape: RoundedRectangleBorder(
+                                                                borderRadius: BorderRadius.circular(5.0),
+                                                                side: BorderSide(color: Colors.blue),
+                                                              ),
+                                                              primary: Colors.white,
+                                                            ),
+                                                            onPressed: () {
+                                                              Get.back();
+                                                            },
+                                                            child: Text(
+                                                              'Fechar',
+                                                              style: TextStyle(
+                                                                color: Colors.blue,
+                                                                fontSize: 17,
+                                                                fontWeight: FontWeight.bold,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          middleText: '${detail.login}');
                                                     },
                                                     // leading:
                                                     leading: CircleAvatar(
@@ -104,7 +218,14 @@ class SearchView extends GetView<SearchController> {
                                                       style: TextStyle(fontSize: 15.0),
                                                       overflow: TextOverflow.ellipsis,
                                                     ),
-                                                    trailing: Icon(Icons.star),
+
+                                                    trailing: IconButton(
+                                                      icon: user[i].isFavorite ? Icon(Icons.star) : Icon(Icons.star_border),
+                                                      onPressed: () {
+                                                        user[i].isFavorite = !favorite.value;
+                                                        print(user[i].isFavorite.toString());
+                                                      },
+                                                    ),
                                                   ),
                                                 ),
                                               );

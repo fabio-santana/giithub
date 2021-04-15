@@ -20,9 +20,6 @@ class SearchRepository {
 
     if (response.statusCode == 200) {
       print('Usuário localizado com sucesso!');
-
-      // return response.data;
-      print(response.data);
       return SearchModel.fromJson(response.data);
     } else {
       print('Usuário não localizado!');

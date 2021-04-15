@@ -47,7 +47,7 @@ class SearchDados {
   String type;
   bool siteAdmin;
   double score;
-  bool isExpanded;
+  bool isFavorite;
 
   SearchDados({
     this.login,
@@ -69,7 +69,7 @@ class SearchDados {
     this.type,
     this.siteAdmin,
     this.score,
-    this.isExpanded,
+    this.isFavorite,
   });
 
   SearchDados.fromJson(Map<String, dynamic> json) {
@@ -92,6 +92,7 @@ class SearchDados {
     type = json['type'];
     siteAdmin = json['site_admin'];
     score = json['score'];
+    isFavorite = false;
   }
 
   Map<String, dynamic> toJson() {

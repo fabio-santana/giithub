@@ -15,9 +15,10 @@ class SearchController extends GetxController {
   SearchModel user;
 
   RxBool apiBusy = false.obs;
+
   final userLov = TextEditingController().obs;
 
-  RxList listausers = [].obs;
+  RxList listaUsers = [].obs;
 
   SearchController() {
     userRepository = SearchRepository();
@@ -47,7 +48,7 @@ class SearchController extends GetxController {
 
       if (user.totalCount > 0) {
         // listausers.addAll(user.items);
-        listausers.assignAll(user.items);
+        listaUsers.assignAll(user.items);
       } else {
         Get.snackbar(
           'Atenção',
@@ -57,7 +58,7 @@ class SearchController extends GetxController {
           barBlur: 50,
           isDismissible: false,
           margin: EdgeInsets.all(8),
-          backgroundColor: Colors.orangeAccent, // redAccent,
+          backgroundColor: Colors.blue, // redAccent,
           colorText: Colors.white,
           duration: Duration(seconds: 5),
           snackPosition: SnackPosition.BOTTOM,
@@ -67,4 +68,8 @@ class SearchController extends GetxController {
     }
     return user.items;
   }
+
+  // void makeFavorite(int index, RxBool isFavorite) {
+  //   user.items[index].isFavorite = isFavorite.value;
+  // }
 }
