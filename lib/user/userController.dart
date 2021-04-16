@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 
 import '../user/user.dart';
 
 class UserController extends GetxController {
-  GetStorage box = GetStorage();
-
-  // var token = GetStorage().read('token');
-  // var login = GetStorage().read('login');
-  // var senha = GetStorage().read('senha');
-
   UserRepository userRepository;
   UserModel user;
 

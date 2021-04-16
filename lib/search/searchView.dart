@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 
 import '../search/search.dart';
 import '../widgets/widgets.dart';
@@ -13,11 +12,10 @@ class SearchView extends GetView<SearchController> {
   Widget build(BuildContext context) {
     GlobalKey _formKey = GlobalKey<FormState>();
     List user = [];
-    RxBool favorite = false.obs;
+    // RxBool favorite = false.obs;
 
     UserController userController = Get.put(UserController());
     // SearchDados cliente;
-    // var cpfcnpj = GetStorage().read('cpfcnpj');
 
     var bottomBar = Text(
       'Feito por Fabio S. Santana',
@@ -219,13 +217,14 @@ class SearchView extends GetView<SearchController> {
                                                       overflow: TextOverflow.ellipsis,
                                                     ),
 
-                                                    trailing: IconButton(
-                                                      icon: user[i].isFavorite ? Icon(Icons.star) : Icon(Icons.star_border),
-                                                      onPressed: () {
-                                                        user[i].isFavorite = !favorite.value;
-                                                        print(user[i].isFavorite.toString());
-                                                      },
-                                                    ),
+                                                    // trailing: IconButton(
+                                                    //   icon: user[i].isFavorite ? Icon(Icons.star) : Icon(Icons.star_border),
+                                                    //   onPressed: () {
+                                                    //     // user[i].isFavorite = !favorite.value;
+                                                    //     print(user[i].isFavorite.toString());
+                                                    //     controller.makeFavorite(i, !user[i].isFavorite);
+                                                    //   },
+                                                    // ),
                                                   ),
                                                 ),
                                               );

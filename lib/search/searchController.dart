@@ -7,10 +7,6 @@ import '../search/search.dart';
 class SearchController extends GetxController {
   GetStorage box = GetStorage();
 
-  // var token = GetStorage().read('token');
-  // var login = GetStorage().read('login');
-  // var senha = GetStorage().read('senha');
-
   SearchRepository userRepository;
   SearchModel user;
 
@@ -69,7 +65,9 @@ class SearchController extends GetxController {
     return user.items;
   }
 
-  // void makeFavorite(int index, RxBool isFavorite) {
-  //   user.items[index].isFavorite = isFavorite.value;
+  // void makeFavorite(int index, bool isFavorite) {
+  //   // user.items[index].isFavorite = isFavorite.value;
+  //   listaUsers[index].isFavorite = isFavorite;
+  //   listaUsers[index].refresh();
   // }
 }
